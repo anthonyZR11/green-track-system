@@ -65,7 +65,7 @@ Antes de levantar el proyecto, asegúrate de tener instalados los siguientes sof
 1.  **Instalar Dependencias**:
     Navega a la carpeta `frontend` del proyecto e instala todas las dependencias necesarias:
     ```bash
-    npm install
+    npm install --legacy-peer-deps
     ```
 
 2.  **Configurar el Entorno (API URL)**:
