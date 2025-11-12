@@ -113,3 +113,13 @@ npm run build
 # O
 # ng build
 ```
+
+## PARA PRUEBAS COMO USUARIO
+
+username: USER
+pass: 12345678
+
+## PARA PRUEBAS COMO ADMINISTRADOR
+
+username: ADMIN
+pass: 12345678
