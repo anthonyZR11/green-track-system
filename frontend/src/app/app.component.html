@@ -1,0 +1,47 @@
+<ng-container *ngIf="!isAuthRoute(); else authBlock">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success px-4">
+    <a class="navbar-brand fw-bold" href="#">GT</a> <!-- Logo con siglas -->
+
+    <div class="ms-auto d-flex align-items-center text-white gap-3 pe-3">
+      <div class="d-flex flex-column text-end">
+        <small class="fw-semibold">{{ username }}</small>
+        <small class="text-light">{{ role }}</small>
+      </div>
+      <button (click)="logout()" class="btn btn-outline-light btn-sm">
+        Cerrar sesión
+      </button>
+    </div>
+
+  </nav>
+  <div class="d-flex vh-100">
+
+    <nav class="bg-success text-light p-3 flex-shrink-0" style="width: 250px;">
+      <h4>GreenTrack</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item mt-2">
+          <a class="nav-link text-light" routerLink="/home" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-light" routerLink="/equipos" routerLinkActive="active">Equipos</a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-light" routerLink="/prestamos" routerLinkActive="active">Préstamos</a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-light" routerLink="/graficos" routerLinkActive="active">Gráficos</a>
+        </li>
+        <li class="nav-item mt-2" *ngIf="isAdmin()">
+          <a class="nav-link text-light" routerLink="/usuarios" routerLinkActive="active">Usuarios</a>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="flex-grow-1 p-3 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</ng-container>
+<ng-template #authBlock>
+  <!-- Aquí solo el router-outlet -->
+  <router-outlet></router-outlet>
+</ng-template>

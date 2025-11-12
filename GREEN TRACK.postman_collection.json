@@ -1,0 +1,748 @@
+{
+	"info": {
+		"_postman_id": "4c1779d1-25df-45b0-ab57-0361acde91fe",
+		"name": "GREEN TRACK",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28857589"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Obtener todos los usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/users",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un usuario por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/users/3",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar un usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Anthony\",\r\n    \"username\": \"aziel4445\",\r\n    \"email\": \"aziel4445.z.roldan@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/users",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar un usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Anthony123\",\r\n    \"username\": \"tonyz\",\r\n    \"email\": \"anthony222233.z.roldan@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/users/19",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Anthony12\",\r\n    \"username\": \"aziel2123\",\r\n    \"email\": \"aziel2123.z.roldan@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": \"ADMIN\"\r\n}"
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/users/7",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registro usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parsear la respuesta JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Extraer el token de la respuesta\r",
+									"let token = response.token;\r",
+									"\r",
+									"// Guardar el token en la variable de entorno\r",
+									"pm.environment.set(\"token\", token);\r",
+									"\r",
+									"// Mensaje de confirmación en la consola\r",
+									"console.log(\"Token guardado:\", token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Anthony\",\r\n    \"username\": \"tonyz23\",\r\n    \"email\": \"tonyz2.z.roldan@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login de usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parsear la respuesta JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Extraer el token de la respuesta\r",
+									"let token = response.token;\r",
+									"\r",
+									"// Guardar el token en la variable de entorno\r",
+									"pm.environment.set(\"token\", token);\r",
+									"\r",
+									"// Mensaje de confirmación en la consola\r",
+									"console.log(\"Token guardado:\", token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ADMIN\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Equipos",
+			"item": [
+				{
+					"name": "Obtener todos los equipos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/equipments",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"equipments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener  equipo por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/equipments/4",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"equipments",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar equipo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"pantalla 2\",\r\n    \"type\": \"DESKTOP\",\r\n    \"brand\": \"LG\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/equipments",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"equipments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar equipo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"pantalla 2\",\r\n    \"type\": \"DESKTOP 1\",\r\n    \"brand\": \"LGe\",\r\n    \"status\": \"PRESTADO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/equipments/1",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"equipments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar equipo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/equipments/1",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"equipments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar eqipos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/equipments/filter?type=escritorio&brand=lg&status=DISPONIBLE",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"equipments",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "escritorio"
+								},
+								{
+									"key": "brand",
+									"value": "lg"
+								},
+								{
+									"key": "status",
+									"value": "DISPONIBLE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Prestamos",
+			"item": [
+				{
+					"name": "Todos los préstamos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/loans",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Préstamos por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/loans/1",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loans",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar préstamo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"1\",\r\n    \"equipmentId\": \"7\",\r\n    \"expectedReturnDate\": \"2025-11-01T23:59:59\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/loans",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar préstamo por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"equipmentId\": 1,\r\n    \"expectedReturnDate\": \"2025-11-20T23:59:59\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/loans/3",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loans",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retornar equipo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/loans/3/return",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loans",
+								"3",
+								"return"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar préstamo por filtros",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/api/v1/loans/search?startDate=2025-11-11T13:07:01&endDate=2025-11-21T13:07:01",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"loans",
+								"search"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-11-11T13:07:01"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-11-21T13:07:01"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

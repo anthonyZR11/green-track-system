@@ -1,0 +1,95 @@
+<div class="container p-3">
+  <h2>Gestor de Equipos</h2>
+  
+  <div class="row mb-3">
+    <div class="col">
+      <input [(ngModel)]="filterType" placeholder="Tipo" class="form-control" />
+    </div>
+    <div class="col">
+      <input [(ngModel)]="filterBrand" placeholder="Marca" class="form-control" />
+    </div>
+    <div class="col">
+      <select [(ngModel)]="filterStatus" class="form-select">
+        <option value="">Todos</option>
+        <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+    <div class="col">
+      <button class="btn btn-primary" (click)="applyFilters()">Filtrar</button>
+      <button class="btn btn-secondary ms-2" (click)="clearFilters()">Limpiar</button>
+    </div>
+  </div>
+
+  <!-- Botón para nuevo equipo -->
+  <button class="btn btn-success mb-3" (click)="openModal()">Nuevo Equipo</button>
+
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Marca</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let equipment of equipments" (click)="selectEquipment(equipment)" style="cursor: pointer;">
+        <td>{{ equipment.id }}</td>
+        <td>{{ equipment.name }}</td>
+        <td>{{ equipment.type }}</td>
+        <td>{{ equipment.brand }}</td>
+        <td>{{ equipment.status }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm me-2"
+            (click)="openModal(equipment); $event.stopPropagation()">Editar</button>
+          <button class="btn btn-danger btn-sm"
+            (click)="deleteEquipment(equipment.id); $event.stopPropagation()">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div class="modal fade" tabindex="-1" id="equipmentModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form *ngIf="selectedEquipment" (ngSubmit)="saveEquipment()">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ isEditing ? 'Editar Equipo' : 'Nuevo Equipo' }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre</label>
+              <input id="name" [(ngModel)]="selectedEquipment.name" name="name" class="form-control" required
+                maxlength="100" />
+            </div>
+            <div class="mb-3">
+              <label for="type" class="form-label">Tipo</label>
+              <input id="type" [(ngModel)]="selectedEquipment.type" name="type" class="form-control" required
+                maxlength="50" />
+            </div>
+            <div class="mb-3">
+              <label for="brand" class="form-label">Marca</label>
+              <input id="brand" [(ngModel)]="selectedEquipment.brand" name="brand" class="form-control" required
+                maxlength="50" />
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">Estado</label>
+              <select id="status" [(ngModel)]="selectedEquipment.status" name="status" class="form-select" required>
+                <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">{{ isEditing ? 'Guardar Cambios' : 'Crear Equipo' }}</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

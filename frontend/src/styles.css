@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'ngx-toastr/toastr';
+.nav-link.active {
+  font-weight: bold;
+  background-color: #0d6efd;
+  border-radius: 4px;
+}
+a.nav-link:hover {
+  background-color: #0b5ed7;
+  color: white;
+}
+
+.nav-link.active {
+  background-color: #3cb16f !important;  /* Cambia el color aquí */
+  color: #fff !important;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.nav-link:hover {
+  background-color: #3cb16f !important;  /* Cambia el color aquí */
+  color: #fff !important;
+  font-weight: bold;
+  border-radius: 8px;
+}

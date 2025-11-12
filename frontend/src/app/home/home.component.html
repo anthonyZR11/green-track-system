@@ -1,0 +1,31 @@
+<div class="p-4 bg-white rounded shadow-sm">
+  <h2>Bienvenido, {{ username }}!</h2>
+  <p class="lead">Esta es tu página principal donde puedes consultar el estado general.</p>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card text-center border-primary mb-3">
+        <div class="card-header bg-primary text-white">Equipos Disponibles</div>
+        <div class="card-body">
+          <h3>{{ equiposDisponibles }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center border-success mb-3">
+        <div class="card-header bg-success text-white">Préstamos Activos</div>
+        <div class="card-body">
+          <h3>{{ prestamosActivos }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center border-info mb-3">
+        <div class="card-header bg-info text-white">Usuarios Activos</div>
+        <div class="card-body">
+          <h3>{{ usuariosActivos }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="container-fluid p-4">
+  <h2 class="mb-4">Estadísticas Generales</h2>
+
+  <!-- Gráfico de Equipos -->
+  <div class="p-4 bg-white rounded shadow-sm mb-4">
+    <h3>Estado de Equipos</h3>
+    <p class="lead">Gráfico de pastel mostrando el estado actual de los equipos.</p>
+    <div style="display: block; height: 300px;" *ngIf="showEquipmentChart">
+      <canvas baseChart #equipmentChart
+              [data]="equipmentPieChartData"
+              [options]="pieChartOptions"
+              [type]="pieChartType">
+      </canvas>
+    </div>
+  </div>
+
+  <!-- Gráfico de Préstamos -->
+  <div class="p-4 bg-white rounded shadow-sm">
+    <h3>Estado de Préstamos</h3>
+    <p class="lead">Gráfico de pastel mostrando el estado actual de los préstamos.</p>
+    <div style="display: block; height: 300px;" *ngIf="showLoanChart">
+      <canvas baseChart #loanChart
+              [data]="loanPieChartData"
+              [options]="pieChartOptions"
+              [type]="pieChartType">
+      </canvas>
+    </div>
+  </div>
+</div>
