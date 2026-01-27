@@ -47,7 +47,7 @@
 
 # Green Track Frontend
 
-Este proyecto es el frontend de la aplicación Green Track, desarrollada con Angular.
+Este proyecto es esarrollado con Angular.
 
 ## Requisitos Previos
 
