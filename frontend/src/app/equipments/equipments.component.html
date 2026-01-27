@@ -1,95 +1,154 @@
-<div class="container p-3">
-  <h2>Gestor de Equipos</h2>
-  
-  <div class="row mb-3">
-    <div class="col">
-      <input [(ngModel)]="filterType" placeholder="Tipo" class="form-control" />
-    </div>
-    <div class="col">
-      <input [(ngModel)]="filterBrand" placeholder="Marca" class="form-control" />
-    </div>
-    <div class="col">
-      <select [(ngModel)]="filterStatus" class="form-select">
-        <option value="">Todos</option>
-        <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
-      </select>
-    </div>
-    <div class="col">
-      <button class="btn btn-primary" (click)="applyFilters()">Filtrar</button>
-      <button class="btn btn-secondary ms-2" (click)="clearFilters()">Limpiar</button>
+<div class="d-flex justify-content-between align-items-end mb-4">
+  <div>
+    <h2 class="mb-1">Gestor de Equipos</h2>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+        <li class="breadcrumb-item active">Equipos</li>
+      </ol>
+    </nav>
+  </div>
+  <button class="btn btn-primary" (click)="openModal()">
+    <i class="bi bi-plus-lg me-1"></i> Nuevo Equipo
+  </button>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body p-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">Tipo</label>
+        <input [(ngModel)]="filterType" placeholder="Ej: Laptop" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">Marca</label>
+        <input [(ngModel)]="filterBrand" placeholder="Ej: HP" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small fw-bold">Estado</label>
+        <select [(ngModel)]="filterStatus" class="form-select">
+          <option value="">Todos los estados</option>
+          <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      <div class="col-md-3 d-flex gap-2">
+        <button class="btn btn-primary flex-grow-1" (click)="applyFilters()">
+          <i class="bi bi-search me-1"></i> Filtrar
+        </button>
+        <button class="btn btn-outline-secondary" (click)="clearFilters()" title="Limpiar filtros">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- Botón para nuevo equipo -->
-  <button class="btn btn-success mb-3" (click)="openModal()">Nuevo Equipo</button>
+<div class="card overflow-hidden">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th class="ps-4">Id</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Marca</th>
+          <th>Estado</th>
+          <th class="text-end pe-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let equipment of equipments" (click)="selectEquipment(equipment)" style="cursor: pointer;">
+          <td class="ps-4">#{{ equipment.id }}</td>
+          <td class="fw-medium">{{ equipment.name }}</td>
+          <td>{{ equipment.type }}</td>
+          <td>{{ equipment.brand }}</td>
+          <td>
+            <span class="badge rounded-pill" [class.bg-success]="equipment.status === 'DISPONIBLE'"
+              [class.bg-primary]="equipment.status === 'PRESTADO'"
+              [class.bg-warning]="equipment.status === 'MANTENIMIENTO'">
+              {{ equipment.status }}
+            </span>
+          </td>
+          <td class="text-end pe-4">
+            <button class="btn btn-sm btn-outline-primary me-2"
+              (click)="openModal(equipment); $event.stopPropagation()">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger"
+              (click)="deleteEquipment(equipment.id); $event.stopPropagation()">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Nombre</th>
-        <th>Tipo</th>
-        <th>Marca</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let equipment of equipments" (click)="selectEquipment(equipment)" style="cursor: pointer;">
-        <td>{{ equipment.id }}</td>
-        <td>{{ equipment.name }}</td>
-        <td>{{ equipment.type }}</td>
-        <td>{{ equipment.brand }}</td>
-        <td>{{ equipment.status }}</td>
-        <td>
-          <button class="btn btn-primary btn-sm me-2"
-            (click)="openModal(equipment); $event.stopPropagation()">Editar</button>
-          <button class="btn btn-danger btn-sm"
-            (click)="deleteEquipment(equipment.id); $event.stopPropagation()">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Modal -->
-  <div class="modal fade" tabindex="-1" id="equipmentModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form *ngIf="selectedEquipment" (ngSubmit)="saveEquipment()">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ isEditing ? 'Editar Equipo' : 'Nuevo Equipo' }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" id="equipmentModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form *ngIf="selectedEquipment" #equipmentForm="ngForm" (ngSubmit)="saveEquipment()">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ isEditing ? 'Editar Equipo' : 'Nuevo Equipo' }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input id="name" [(ngModel)]="selectedEquipment.name" name="name" #nameControl="ngModel"
+              class="form-control"
+              [class.is-invalid]="nameControl.invalid && (nameControl.dirty || nameControl.touched)" required
+              minlength="3" maxlength="100" />
+            <div *ngIf="nameControl.invalid && (nameControl.dirty || nameControl.touched)" class="invalid-feedback">
+              <div *ngIf="nameControl.hasError('required')">El nombre es obligatorio.</div>
+              <div *ngIf="nameControl.hasError('minlength')">Debe tener minimo 3 caracteres.</div>
+              <div *ngIf="nameControl.hasError('maxlength')">Debe tener maximo 100 caracteres.</div>
+            </div>
           </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="name" class="form-label">Nombre</label>
-              <input id="name" [(ngModel)]="selectedEquipment.name" name="name" class="form-control" required
-                maxlength="100" />
-            </div>
-            <div class="mb-3">
-              <label for="type" class="form-label">Tipo</label>
-              <input id="type" [(ngModel)]="selectedEquipment.type" name="type" class="form-control" required
-                maxlength="50" />
-            </div>
-            <div class="mb-3">
-              <label for="brand" class="form-label">Marca</label>
-              <input id="brand" [(ngModel)]="selectedEquipment.brand" name="brand" class="form-control" required
-                maxlength="50" />
-            </div>
-            <div class="mb-3">
-              <label for="status" class="form-label">Estado</label>
-              <select id="status" [(ngModel)]="selectedEquipment.status" name="status" class="form-select" required>
-                <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
-              </select>
+          <div class="mb-3">
+            <label for="type" class="form-label">Tipo</label>
+            <input id="type" [(ngModel)]="selectedEquipment.type" name="type" #typeControl="ngModel"
+              class="form-control"
+              [class.is-invalid]="typeControl.invalid && (typeControl.dirty || typeControl.touched)" required
+              minlength="2" maxlength="80" />
+            <div *ngIf="typeControl.invalid && (typeControl.dirty || typeControl.touched)" class="invalid-feedback">
+              <div *ngIf="typeControl.hasError('required')">El tipo es obligatorio.</div>
+              <div *ngIf="typeControl.hasError('minlength')">Debe tener minimo 2 caracteres.</div>
+              <div *ngIf="typeControl.hasError('maxlength')">Debe tener maximo 80 caracteres.</div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">{{ isEditing ? 'Guardar Cambios' : 'Crear Equipo' }}</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <div class="mb-3">
+            <label for="brand" class="form-label">Marca</label>
+            <input id="brand" [(ngModel)]="selectedEquipment.brand" name="brand" #brandControl="ngModel"
+              class="form-control"
+              [class.is-invalid]="brandControl.invalid && (brandControl.dirty || brandControl.touched)" required
+              minlength="2" maxlength="50" />
+            <div *ngIf="brandControl.invalid && (brandControl.dirty || brandControl.touched)" class="invalid-feedback">
+              <div *ngIf="brandControl.hasError('required')">La marca es obligatoria.</div>
+              <div *ngIf="brandControl.hasError('minlength')">Debe tener minimo 2 caracteres.</div>
+              <div *ngIf="brandControl.hasError('maxlength')">Debe tener maximo 50 caracteres.</div>
+            </div>
           </div>
-        </form>
-      </div>
+          <div class="mb-3">
+            <label for="status" class="form-label">Estado</label>
+            <select id="status" [(ngModel)]="selectedEquipment.status" name="status" #statusControl="ngModel"
+              class="form-select" [class.is-invalid]="statusControl.invalid && statusControl.touched" required>
+              <option *ngFor="let status of statusList" [value]="status">{{ status }}</option>
+            </select>
+            <div *ngIf="statusControl.invalid && statusControl.touched" class="invalid-feedback">
+              <div *ngIf="statusControl.hasError('required')">El estado es obligatorio.</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="equipmentForm.invalid">
+            {{ isEditing ? 'Guardar Cambios' : 'Crear Equipo' }}
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

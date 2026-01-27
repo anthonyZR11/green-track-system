@@ -21,13 +21,14 @@ export class LoansComponent implements OnInit {
   equipments: Equipment[] = [];
   selectedLoan: Loan | null = null;
   isEditing = false;
+  isSubmitting = false;
   modal!: Modal;
 
   // Filtros
   filterUserId: number | null = null;
   filterStartDate: string = '';
   filterEndDate: string = '';
-  
+
   // Campo para el formulario
   expectedReturnDate: string = '';
 
@@ -36,7 +37,7 @@ export class LoansComponent implements OnInit {
     private userService: UserService,
     private equipmentService: EquipmentService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadUsers();
@@ -73,11 +74,11 @@ export class LoansComponent implements OnInit {
     // Convertir fechas a formato ISO completo
     let startDate: string | undefined = undefined;
     let endDate: string | undefined = undefined;
-    
+
     if (this.filterStartDate && this.filterStartDate.trim() !== '') {
       startDate = `${this.filterStartDate}T00:00:00`;
     }
-    
+
     if (this.filterEndDate && this.filterEndDate.trim() !== '') {
       endDate = `${this.filterEndDate}T23:59:59`;
     }
@@ -119,13 +120,13 @@ export class LoansComponent implements OnInit {
         this.expectedReturnDate = '';
       }
     } else {
-      this.selectedLoan = { 
-        id: 0, 
-        userId: 0, 
-        equipmentId: 0, 
-        loanDate: '', 
-        expectedReturnDate: '', 
-        status: 'ACTIVO' 
+      this.selectedLoan = {
+        id: 0,
+        userId: null as any,
+        equipmentId: null as any,
+        loanDate: '',
+        expectedReturnDate: '',
+        status: 'ACTIVO'
       } as Loan;
       this.expectedReturnDate = '';
     }
@@ -154,7 +155,6 @@ export class LoansComponent implements OnInit {
 
     // Preparar datos para enviar
     const loanData: any = {
-      id: this.selectedLoan.id,
       userId: this.selectedLoan.userId,
       equipmentId: this.selectedLoan.equipmentId,
       status: this.selectedLoan.status
@@ -166,6 +166,7 @@ export class LoansComponent implements OnInit {
       loanData.expectedReturnDate = `${this.expectedReturnDate}T23:59:59`;
     }
 
+    this.isSubmitting = true;
     if (this.isEditing) {
       this.loanService.updateLoan(this.selectedLoan.id, loanData)
         .subscribe({
@@ -174,8 +175,10 @@ export class LoansComponent implements OnInit {
             this.modal.hide();
             this.toastr.success('Préstamo actualizado correctamente', 'Éxito');
             this.clearSelection();
+            this.isSubmitting = false;
           },
           error: (err) => {
+            this.isSubmitting = false;
             const errorMessage = this.getErrorMessage(err);
             if (err.status === 409) {
               this.toastr.warning(errorMessage, 'Advertencia');
@@ -192,8 +195,10 @@ export class LoansComponent implements OnInit {
             this.modal.hide();
             this.toastr.success('Préstamo creado correctamente', 'Éxito');
             this.clearSelection();
+            this.isSubmitting = false;
           },
           error: (err) => {
+            this.isSubmitting = false;
             const errorMessage = this.getErrorMessage(err);
             if (err.status === 409) {
               this.toastr.warning(errorMessage, 'Advertencia');
@@ -207,14 +212,17 @@ export class LoansComponent implements OnInit {
 
   returnLoan(id: number) {
     if (confirm('¿Está seguro de que desea devolver este equipo?')) {
+      this.isSubmitting = true;
       this.loanService.returnLoan(id)
         .subscribe({
           next: () => {
             this.loadLoans();
             this.loadEquipments(); // Recargar equipos para actualizar estados
             this.toastr.success('Equipo devuelto correctamente', 'Éxito');
+            this.isSubmitting = false;
           },
           error: (err) => {
+            this.isSubmitting = false;
             if (err.status === 409) {
               const errorMessage = err.error?.message || err.error || 'El préstamo ya ha sido devuelto o no se puede devolver en este estado';
               this.toastr.warning(errorMessage, 'Advertencia');

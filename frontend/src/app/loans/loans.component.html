@@ -1,73 +1,104 @@
 <div class="container p-3">
-  <h2>Gestor de Préstamos</h2>
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <h2 class="mb-1">Gestor de Préstamos</h2>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+          <li class="breadcrumb-item active">Préstamos</li>
+        </ol>
+      </nav>
+    </div>
+    <button class="btn btn-primary" (click)="openModal()">
+      <i class="bi bi-plus-lg me-1"></i> Nuevo Préstamo
+    </button>
+  </div>
 
   <!-- Filtros -->
-  <div class="row mb-3">
-    <div class="col-md-3">
-      <label for="filterUserId" class="form-label">Usuario</label>
-      <select id="filterUserId" [(ngModel)]="filterUserId" class="form-select">
-        <option [value]="null">Todos los usuarios</option>
-        <option *ngFor="let user of users" [value]="user.id">{{ user.name }} ({{ user.username }})</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <label for="filterStartDate" class="form-label">Fecha Inicio</label>
-      <input id="filterStartDate" type="date" [(ngModel)]="filterStartDate" class="form-control" />
-    </div>
-    <div class="col-md-3">
-      <label for="filterEndDate" class="form-label">Fecha Fin</label>
-      <input id="filterEndDate" type="date" [(ngModel)]="filterEndDate" class="form-control" />
-    </div>
-    <div class="col-md-3 d-flex align-items-end">
-      <button class="btn btn-primary me-2" (click)="applyFilters()">Filtrar</button>
-      <button class="btn btn-secondary" (click)="clearFilters()">Limpiar</button>
+  <div class="card mb-4">
+    <div class="card-body p-4">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label for="filterUserId" class="form-label small fw-bold">Usuario</label>
+          <select id="filterUserId" [(ngModel)]="filterUserId" class="form-select">
+            <option [ngValue]="null">Todos los usuarios</option>
+            <option *ngFor="let user of users" [value]="user.id">{{ user.name }} ({{ user.username }})</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="filterStartDate" class="form-label small fw-bold">Fecha Inicio</label>
+          <input id="filterStartDate" type="date" [(ngModel)]="filterStartDate" class="form-control" />
+        </div>
+        <div class="col-md-3">
+          <label for="filterEndDate" class="form-label small fw-bold">Fecha Fin</label>
+          <input id="filterEndDate" type="date" [(ngModel)]="filterEndDate" class="form-control" />
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <button class="btn btn-primary flex-grow-1" (click)="applyFilters()">
+            <i class="bi bi-search me-1"></i> Filtrar
+          </button>
+          <button class="btn btn-outline-secondary" (click)="clearFilters()">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Botón para nuevo préstamo -->
-  <button class="btn btn-success mb-3" (click)="openModal()">Nuevo Préstamo</button>
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Usuario</th>
-        <th>Equipo</th>
-        <th>Fecha Préstamo</th>
-        <th>Fecha Retorno</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let loan of loans">
-        <td>{{ loan.id }}</td>
-        <td>{{ loan.userName || getUserName(loan.userId) }}</td>
-        <td>{{ loan.equipmentName || getEquipmentName(loan.equipmentId) }}</td>
-        <td>{{ loan.loanDate | date:'dd/MM/yyyy' }}</td>
-        <td>{{ loan.expectedReturnDate ? (loan.expectedReturnDate | date:'dd/MM/yyyy') : '-' }}</td>
-        <td>{{ loan.status }}</td>
-        <td>
-          <button class="btn btn-primary btn-sm me-2"
-            (click)="openModal(loan)">Editar</button>
-          <button class="btn btn-success btn-sm me-2"
-            (click)="returnLoan(loan.id)"
-            [disabled]="loan.status === 'DEVUELTO' || loan.status === 'FINALIZADO'">
-            Devolver
-          </button>
-        </td>
-      </tr>
-      <tr *ngIf="loans.length === 0">
-        <td colspan="7" class="text-center">No hay préstamos registrados</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th class="ps-4">Id</th>
+            <th>Usuario</th>
+            <th>Equipo</th>
+            <th>Préstamo</th>
+            <th>Retorno Esperado</th>
+            <th>Estado</th>
+            <th class="text-end pe-4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let loan of loans">
+            <td class="ps-4">#{{ loan.id }}</td>
+            <td class="fw-medium">{{ loan.userName || getUserName(loan.userId) }}</td>
+            <td>{{ loan.equipmentName || getEquipmentName(loan.equipmentId) }}</td>
+            <td>{{ loan.loanDate | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <span *ngIf="loan.expectedReturnDate">{{ loan.expectedReturnDate | date:'dd/MM/yyyy' }}</span>
+              <span *ngIf="!loan.expectedReturnDate" class="text-muted">-</span>
+            </td>
+            <td>
+              <span class="badge rounded-pill"
+                [class.bg-success]="loan.status === 'DEVUELTO' || loan.status === 'FINALIZADO'"
+                [class.bg-primary]="loan.status === 'ACTIVO'">
+                {{ loan.status }}
+              </span>
+            </td>
+            <td class="text-end pe-4">
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="openModal(loan)" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-success" (click)="returnLoan(loan.id)"
+                [disabled]="loan.status === 'DEVUELTO' || loan.status === 'FINALIZADO'" title="Devolver">
+                <i class="bi bi-arrow-return-left"></i> Devolver
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="loans.length === 0">
+            <td colspan="7" class="text-center py-4 text-muted">No hay préstamos registrados</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <!-- Modal -->
   <div class="modal fade" tabindex="-1" id="loanModal">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form *ngIf="selectedLoan" (ngSubmit)="saveLoan()">
+        <form *ngIf="selectedLoan" #loanForm="ngForm" (ngSubmit)="saveLoan()">
           <div class="modal-header">
             <h5 class="modal-title">{{ isEditing ? 'Editar Préstamo' : 'Nuevo Préstamo' }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -75,25 +106,32 @@
           <div class="modal-body">
             <div class="mb-3">
               <label for="userId" class="form-label">Usuario</label>
-              <select id="userId" [(ngModel)]="selectedLoan.userId" name="userId" class="form-select" required>
-                <option [value]="0">Seleccione un usuario</option>
+              <select id="userId" [(ngModel)]="selectedLoan.userId" name="userId" #userIdControl="ngModel"
+                class="form-select" [class.is-invalid]="userIdControl.invalid && userIdControl.touched" required>
+                <option [ngValue]="null" disabled>Seleccione un usuario</option>
                 <option *ngFor="let user of users" [value]="user.id">{{ user.name }} ({{ user.username }})</option>
               </select>
+              <div *ngIf="userIdControl.invalid && userIdControl.touched" class="invalid-feedback">
+                <div *ngIf="userIdControl.hasError('required')">El usuario es obligatorio.</div>
+              </div>
             </div>
             <div class="mb-3">
               <label for="equipmentId" class="form-label">Equipo</label>
-              <select id="equipmentId" [(ngModel)]="selectedLoan.equipmentId" name="equipmentId" 
-                class="form-select" required>
-                <option [value]="0">Seleccione un equipo</option>
+              <select id="equipmentId" [(ngModel)]="selectedLoan.equipmentId" name="equipmentId"
+                #equipmentIdControl="ngModel" class="form-select"
+                [class.is-invalid]="equipmentIdControl.invalid && equipmentIdControl.touched" required>
+                <option [ngValue]="null" disabled>Seleccione un equipo</option>
                 <option *ngFor="let equipment of equipments" [value]="equipment.id">
                   {{ equipment.name }} - {{ equipment.type }} ({{ equipment.brand }}) - {{ equipment.status }}
                 </option>
               </select>
+              <div *ngIf="equipmentIdControl.invalid && equipmentIdControl.touched" class="invalid-feedback">
+                <div *ngIf="equipmentIdControl.hasError('required')">El equipo es obligatorio.</div>
+              </div>
             </div>
             <div class="mb-3" *ngIf="isEditing && selectedLoan.loanDate">
               <label class="form-label">Fecha Préstamo</label>
-              <input type="text" [value]="selectedLoan.loanDate | date:'dd/MM/yyyy'" 
-                class="form-control" disabled />
+              <input type="text" [value]="selectedLoan.loanDate | date:'dd/MM/yyyy'" class="form-control" disabled />
               <small class="text-muted">Esta fecha se registra automáticamente al crear el préstamo</small>
             </div>
             <div class="mb-3">
@@ -101,16 +139,23 @@
                 Fecha Retorno Esperada
                 <span class="text-muted small">(Opcional)</span>
               </label>
-              <input id="expectedReturnDate" type="date" [(ngModel)]="expectedReturnDate" name="expectedReturnDate" 
+              <input id="expectedReturnDate" type="date" [(ngModel)]="expectedReturnDate" name="expectedReturnDate"
                 class="form-control" />
             </div>
             <div class="mb-3">
               <label for="status" class="form-label">Estado</label>
-              <input id="status" [(ngModel)]="selectedLoan.status" name="status" class="form-control" required />
+              <input id="status" [(ngModel)]="selectedLoan.status" name="status" #statusControl="ngModel"
+                class="form-control" [class.is-invalid]="statusControl.invalid && statusControl.touched" required />
+              <div *ngIf="statusControl.invalid && statusControl.touched" class="invalid-feedback">
+                <div *ngIf="statusControl.hasError('required')">El estado es obligatorio.</div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">{{ isEditing ? 'Guardar Cambios' : 'Crear Préstamo' }}</button>
+            <button type="submit" class="btn btn-primary" [disabled]="loanForm.invalid || isSubmitting">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+              {{ isEditing ? 'Guardar Cambios' : 'Crear Préstamo' }}
+            </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           </div>
         </form>

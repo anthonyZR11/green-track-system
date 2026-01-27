@@ -12,14 +12,14 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  username = '';
+  email = '';
   password = '';
   error = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin() {
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.login(this.email, this.password).subscribe({
       next: () => {
         this.router.navigate(['/home']);
       },

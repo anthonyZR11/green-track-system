@@ -49,18 +49,19 @@ export class EquipmentsComponent implements OnInit {
     const modalElement = document.getElementById('equipmentModal');
     // Instancia modal Bootstrap
     this.modal = new Modal(modalElement!);
-  }
 
+  }
+  
   loadEquipments() {
     this.equipmentService.getEquipments(this.filterType, this.filterBrand, this.filterStatus)
-      .subscribe(data => this.equipments = data);
+    .subscribe(data => this.equipments = data);
   }
-
+  
   selectEquipment(equipment: Equipment) {
     this.selectedEquipment = { ...equipment };
     this.isEditing = true;
   }
-
+  
   openModal(equipment?: Equipment) {
     this.isEditing = !!equipment;
     if (equipment) {

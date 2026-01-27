@@ -20,6 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
 })
 export class AppComponent implements OnInit, OnDestroy {
   username: string = '';
+  email: string = '';
   role: string = '';
 
   user: User | null = null;
@@ -30,8 +31,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.authService.user$.subscribe(user => {
       this.user = user;
-      this.username = user?.username || '';
-      this.role = user?.role || '';
+      this.username = user?.username || user?.email || 'Usuario';
+      this.email = user?.email || '';
+      this.role = user?.role || 'USER';
     });
   }
 
