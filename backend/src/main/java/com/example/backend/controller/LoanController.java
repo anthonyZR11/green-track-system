@@ -29,11 +29,8 @@ public class LoanController {
     @Operation(summary = "Buscar préstamos con filtros")
     public ResponseEntity<List<LoanResponse>> searchLoans(
             @Parameter(description = "ID del usuario") @RequestParam(required = false) Integer userId,
-            @Parameter(description = "Fecha de inicio") @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @Parameter(description = "Fecha de fin") @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
-    ) {
+            @Parameter(description = "Fecha de inicio") @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @Parameter(description = "Fecha de fin") @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         List<LoanResponse> loans = loanService.searchLoans(userId, startDate, endDate);
         return ResponseEntity.ok(loans);
     }
@@ -73,10 +70,7 @@ public class LoanController {
     // ✅ Endpoint para devolver equipo
     @PutMapping("/{id}/return")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    @Operation(
-            summary = "Devolver equipo prestado",
-            description = "Marca el préstamo como devuelto y registra la fecha de devolución"
-    )
+    @Operation(summary = "Devolver equipo prestado", description = "Marca el préstamo como devuelto y registra la fecha de devolución")
     public ResponseEntity<LoanResponse> returnLoan(@PathVariable Integer id) {
         LoanResponse response = loanService.returnLoan(id);
         return ResponseEntity.ok(response);

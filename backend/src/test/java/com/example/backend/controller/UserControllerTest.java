@@ -37,7 +37,7 @@ class UserControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 
         userResponse = new UserResponse(
-                1,
+                2,
                 "Juan Pérez",
                 "juanp",
                 "juan@ejemplo.com",

@@ -60,11 +60,11 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtService.generateToken(userDetails);
 
         // Devolver la respuesta con el token
-        return new AuthResponse(token, user.getUsername(), user.getRole());
+        return new AuthResponse(token, user.getUsername(), user.getUsername(), user.getRole());
     }
 
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> {
                 System.out.println(request);
                 return new UnauthorizedException("Usuario o contraseña inválidos");
@@ -73,21 +73,21 @@ public class AuthServiceImpl implements AuthService {
 
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                    request.getUsername(),
+                    request.getEmail(),
                     request.getPassword()
                 )
             );
 
             var userDetails = org.springframework.security.core.userdetails.User
                 .builder()
-                .username(user.getUsername())
+                .username(user.getEmail())
                 .password(user.getPassword())
                 .authorities("ROLE_" + user.getRole())
                 .build();
 
             String token = jwtService.generateToken(userDetails);
 
-            return new AuthResponse(token, user.getUsername(), user.getRole());
+            return new AuthResponse(token, user.getUsername(), user.getEmail(), user.getRole());
         } catch (AuthenticationException e) {
             throw new UnauthorizedException("Error de autenticación: " + e.getMessage());
         } catch (Exception e) {

@@ -48,6 +48,8 @@ public class LoanServiceImpl implements LoanService {
         User user = userRepository.findById(loanRequest.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + loanRequest.getUserId()));
 
+
+        System.out.println(user);
         // Buscar equipo
         Equipment equipment = equipmentRepository.findById(loanRequest.getEquipmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Equipo no encontrado con id: " + loanRequest.getEquipmentId()));
@@ -63,7 +65,7 @@ public class LoanServiceImpl implements LoanService {
             );
         }
 
-        if (loanRequest.getExpectedReturnDate().isBefore(LocalDateTime.now())) {
+        if (loanRequest.getExpectedReturnDate() != null && loanRequest.getExpectedReturnDate().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("La fecha de retorno no puede ser menor a la fecha actual");
         }
 
@@ -81,6 +83,7 @@ public class LoanServiceImpl implements LoanService {
                 .expectedReturnDate(loanRequest.getExpectedReturnDate())
                 .status(status)
                 .build();
+
 
         Loan savedLoan = loanRepository.save(loan);
         return convertToResponse(savedLoan);
