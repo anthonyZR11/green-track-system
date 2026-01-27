@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dumping data for table greentrack.users: ~2 rows (approximately)
 INSERT INTO `users` (`id`, `createdAt`, `deletedAt`, `email`, `name`, `password`, `role`, `updatedAt`, `username`) VALUES
-	(null, '2025-11-11 21:46:18', NULL, 'tonyz24.z.roldan@gmail.com', 'Anthony', '$2a$10$8QG7whqJ5ZKG5cZqcCXFRu2iVSJur6KD85H0Vea4QqSe4WgnYTI.6', 'USER', '2025-11-12 06:12:39', 'USER'),
-	(null, '2025-11-11 21:47:49', NULL, 'anthony.z.roldan@gmail.com', 'Anthony', '$2a$10$v6JkLl0vod5dhBiHPHvJDenh.wUZYPc6iEJSyTZpzQ8Vbhs.58OtS', 'ADMIN', '2025-11-12 06:12:36', 'ADMIN');
+	(null, '2025-11-11 21:46:18', NULL, 'fer_diaz@gmail.com', 'Anthony', '$2a$10$8QG7whqJ5ZKG5cZqcCXFRu2iVSJur6KD85H0Vea4QqSe4WgnYTI.6', 'USER', '2025-11-12 06:12:39', 'FerDiaz'),
+	(null, '2025-11-11 21:47:49', NULL, 'anthony.z.roldan@gmail.com', 'Anthony', '$2a$10$v6JkLl0vod5dhBiHPHvJDenh.wUZYPc6iEJSyTZpzQ8Vbhs.58OtS', 'ADMIN', '2025-11-12 06:12:36', 'TonyZ');
 
 
 -- Dumping structure for table greentrack.loans

@@ -116,10 +116,10 @@ npm run build
 
 ## PARA PRUEBAS COMO USUARIO
 
-username: USER
+username: fer_diaz@gmail.com
 pass: 12345678
 
 ## PARA PRUEBAS COMO ADMINISTRADOR
 
-username: ADMIN
+username: anthony.z.roldan@gmail.com
 pass: 12345678
